@@ -1,5 +1,3 @@
-const filterMe = (array) => {
-  return array
-}
-
-export default filterMe
+import Trie from './Trie.js';
+// import words from './words.json';
+import Node from './Node.js';

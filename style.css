@@ -1,0 +1,29 @@
+body {
+  font-family: sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-image: url(assets/blue.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+h1 {
+  font-size: 50px;
+  color: #fff;
+}
+
+
+.search-input {
+  height: 30px;
+  padding: 10px;
+  width: 300%;
+  font-size: 20px;
+}
