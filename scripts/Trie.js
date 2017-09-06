@@ -6,34 +6,42 @@ export default class Trie {
     this.wordCount = 0;
   }
 
-  populate() {
+  insert(string) {
+    const node = new Node()
 
+    if (!this.head) {
+      this.head = node;
+    }
+
+    let currentNode = this.head
+
+    const lettersArray = [...string.toLowerCase()];
+
+    lettersArray.forEach( letter => {
+      if (!currentNode.children[letter]) {
+        currentNode.children[letter] = new Node(letter);
+      }
+      currentNode = currentNode.children[letter];
+    });
+
+    if (!currentNode.isWord) {
+      currentNode.isWord = true;
+      this.wordCount++;
+      currentNode.value = string
+    }
+  }
+
+  populate(dictionary) {
+    dictionary.forEach( word => {
+      this.insert(word);
+    })
   }
 
   countWords() {
     this.wordCount++;
   }
 
-  insert(string) {
-    let wordCheck = [];
-    const stringArray = [...string.toLowerCase()]
-    let letter = stringArray.shift();
-    let currentNode = this.head
 
-    wordCheck.push(letter)
-
-    while (letter) {
-      if (!currentNode.children[letter]) {
-        currentNode.children[letter] = new Node()
-      }
-      currentNode = currentNode.children[letter]
-      wordCheck.push(letter)
-
-    }
-
-
-
-  }
 
   suggest() {
 
