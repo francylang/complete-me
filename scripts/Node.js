@@ -3,8 +3,5 @@ export default class Node {
     this.letter = letter;
     this.isWord = false;
     this.children = {};
-    this.frequency = 0;
-    this.timeStamp = 0;
-
   }
 }
