@@ -1,3 +1,9 @@
 import Trie from './Trie.js';
-// import words from './words.json';
-import Node from './Node.js';
+import dictionary from './words.json';
+
+const searchTrie = new Trie();
+//
+// $(document).ready( () => {
+//   searchTrie.populate(dictionary);
+//   $('.search').focus();
+// })
