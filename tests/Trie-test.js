@@ -6,29 +6,22 @@ const fs = require ('fs');
 
 const text = "/usr/share/dict/words";
 
+const dictionary = fs.readFileSync(text).toString().trim().split('\n');
+
 
 describe ('Trie functionality', () => {
 
-  describe('populate', () => {
-    let letterTrie;
+  describe('POPULATE', () => {
 
-    beforeEach( () => {
-      letterTrie = new Trie();
-    })
-
-    it('should import words from the dictionary', () => {
-
-      const text = "/usr/share/dict/words";
-
-      let dictionary = fs.readFileSync(text).toString().trim().split('\n');
+    it.skip('should import words from the dictionary', () => {
+      let letterTrie = new Trie();
 
       letterTrie.populate(dictionary);
-
       expect(letterTrie.wordCount).to.equal(234371);
-    })
-  })
+    });
+  });
 
-  describe('insert', () => {
+  describe('INSERT', () => {
     let letterTrie;
 
     beforeEach( () => {
@@ -36,73 +29,73 @@ describe ('Trie functionality', () => {
     })
 
     it('should have a root', () => {
-      expect(letterTrie.head).to.equal(null);
-    })
+      expect(letterTrie.root).to.equal(null);
+    });
 
     it('should take a word as an instance of a node', () => {
       letterTrie.insert('woman');
 
-      expect(letterTrie.head).to.be.instanceOf(Node);
-    })
+      expect(letterTrie.root).to.be.instanceOf(Node);
+    });
 
     it('should be able to insert a letter', () => {
       letterTrie.insert('t');
 
       expect(
-        letterTrie.head
+        letterTrie.root
         .children.t.letter
-      ) .to.be.equal('t');
-    })
+       ).to.be.equal('t');
+    });
 
     it('should be able to insert a word', () => {
-      letterTrie.insert('ten')
+      letterTrie.insert('ten');
 
       expect(
-       letterTrie.head
+       letterTrie.root
        .children.t.letter
-      ).to.equal('t')
+      ).to.equal('t');
 
       expect(
-      letterTrie.head
+      letterTrie.root
       .children.t
       .children.e.letter
-     ).to.equal('e')
+     ).to.equal('e');
 
       expect(
-       letterTrie.head
+       letterTrie.root
        .children.t
        .children.e
        .children.n.letter
-      ).to.equal('n')
-    })
+      ).to.equal('n');
+    });
 
     it('should assign isWord property set to true to inserted words', () => {
       letterTrie.insert('tent');
       letterTrie.insert('ten');
 
       expect(
-        letterTrie.head
+        letterTrie.root
         .children.t
         .children.e
         .children.n
         .children.t.letter
-       ).to.equal('t')
+       ).to.equal('t');
 
       expect(
-        letterTrie.head
+        letterTrie.root
         .children.t
         .children.e
         .children.n.isWord
-       ).to.equal(true)
+       ).to.equal(true);
 
       expect(
-        letterTrie.head
+        letterTrie.root
         .children.t
         .children.e
         .children.n
         .children.t.isWord
-       ).to.equal(true)
-    })
+       ).to.equal(true);
+    });
 
     it('should be able to insert multiple words correctly', () => {
       letterTrie.insert('tents');
@@ -113,7 +106,7 @@ describe ('Trie functionality', () => {
       letterTrie.insert('train');
 
       expect(
-        letterTrie.head
+        letterTrie.root
         .children.t
         .children.e
         .children.n
@@ -122,7 +115,7 @@ describe ('Trie functionality', () => {
        ).to.equal(true);
 
       expect(
-        letterTrie.head
+        letterTrie.root
         .children.t
         .children.e
         .children.n
@@ -130,14 +123,14 @@ describe ('Trie functionality', () => {
        ).to.equal(true);
 
       expect(
-        letterTrie.head
+        letterTrie.root
         .children.t
         .children.e
         .children.n.isWord
        ).to.equal(true);
 
       expect(
-        letterTrie.head
+        letterTrie.root
         .children.t
         .children.e
         .children.n
@@ -149,7 +142,7 @@ describe ('Trie functionality', () => {
        ).to.equal(true);
 
       expect(
-        letterTrie.head
+        letterTrie.root
         .children.t
         .children.e
         .children.n
@@ -159,7 +152,7 @@ describe ('Trie functionality', () => {
        ).to.equal(true);
 
       expect(
-        letterTrie.head
+        letterTrie.root
         .children.t
         .children.r
         .children.a
@@ -169,15 +162,88 @@ describe ('Trie functionality', () => {
     })
 
     it('should know if a word is incomplete', () => {
-      letterTrie.insert('runner')
+      letterTrie.insert('runner');
 
       expect(
-       letterTrie.head
+       letterTrie.root
        .children.r
        .children.u
        .children.n
        .children.n.isWord
       ).to.equal(false);
+    });
+  });
+
+  describe('COUNT', () => {
+    let letterTrie;
+
+    beforeEach( () => {
+      letterTrie = new Trie();
+    });
+
+    it('should keep track of word count', () => {
+      expect(letterTrie.count()).to.equal(0);
+
+      letterTrie.insert('tall');
+      expect(letterTrie.count()).to.equal(1);
+
+      letterTrie.insert('tent');
+      expect(letterTrie.count()).to.equal(2);
+
+      letterTrie.insert('tentacle');
+      expect(letterTrie.count()).to.equal(3);
+    });
+  });
+
+  describe('FIND NODE', () => {
+    let letterTrie;
+
+    beforeEach(() => {
+      letterTrie = new Trie()
     })
   })
-})
+
+  describe('FIND CHILDREN WORDS', () => {
+    let letterTrie;
+
+    beforeEach(() => {
+      letterTrie = new Trie()
+    })
+
+    it('should return a full word based on input of prefix', () => {
+      letterTrie.insert('climber')
+
+      letterTrie.suggest('cl')
+
+      let checkedNode = letterTrie
+                        .root
+                        .children.c
+                        .children.l
+
+      expect(letterTrie.findChildrenWords(
+        'cl', checkedNode, [])).to.deep.equal(
+          [ { word: 'climber', frequency: 0 }])
+    })
+  })
+
+  describe('SUGGEST', () => {
+    let letterTrie;
+
+    beforeEach( () => {
+      letterTrie = new Trie()
+    })
+
+    it('should suggest a word', () => {
+      letterTrie.insert('climb');
+      letterTrie.insert('clam');
+      letterTrie.insert('climber');
+      letterTrie.insert('clip');
+      letterTrie.insert('clinic');
+      letterTrie.insert('carry');
+
+      expect(letterTrie.suggest('cli')).to.deep.equal(
+      [ 'climb', 'climber', 'clip', 'clinic' ] )
+
+    });
+  });
+});
