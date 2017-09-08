@@ -92,7 +92,7 @@ export default class Trie {
       return b.frequency - a.frequency
     })
     .map(object => object.word)
-    .slice(0, 15);
+    .slice(0, 10);
   }
 
 
