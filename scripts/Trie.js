@@ -13,13 +13,11 @@ export default class Trie {
   }
 
   insert(string) {
-
     if (!this.root) {
       this.root = new Node();
     }
 
     let currentNode = this.root;
-
 
     [...string.toLowerCase()].forEach(( letter, index, array ) => {
       if (!currentNode.children[letter]) {
@@ -48,7 +46,7 @@ export default class Trie {
     let currentNode = this.findNode(inputString);
 
     if (!currentNode) {
-      return 'nothing for you'
+      return 'nothing for you';
     }
 
     if (currentNode.isWord) {
@@ -56,26 +54,25 @@ export default class Trie {
     }
     let output = this.findChildrenWords(inputString, currentNode, suggestionsArray);
 
-    let finalOutput = this.prepareOutput(output)
+    let finalOutput = this.prepareOutput(output);
 
-    return finalOutput
+    return finalOutput;
   }
 
   findNode(string) {
     let currentNode = this.root;
 
     [...string.toLowerCase()].forEach((letter) => {
-
       if (currentNode !== undefined) {
         currentNode = currentNode.children[letter]
       }
-    })
+    });
 
     return currentNode;
   }
 
   findChildrenWords(string, currentNode, suggestionsArray) {
-    let keys = Object.keys(currentNode.children)
+    let keys = Object.keys(currentNode.children);
 
     keys.forEach((key) => {
       let completeWord = string.toLowerCase() + currentNode.children[key].letter;
@@ -83,24 +80,23 @@ export default class Trie {
       if (currentNode.children[key].isWord) {
         suggestionsArray.push( {word: completeWord, frequency: currentNode.children[key].frequency} );
       }
+
       completeWord = this.findChildrenWords(completeWord, currentNode.children[key], suggestionsArray);
 
-    })
+    });
     return suggestionsArray;
-
   }
 
   prepareOutput(array) {
     return array.sort((a, b) => {
-      return b.frequency - a.frequency;
+      return b.frequency - a.frequency
     })
-    .reduce((acc, object) => {
-      acc.push(object.word);
-      return acc;
-    }, [])
+    .map(object => object.word)
     .slice(0, 15);
   }
-// map over the array
+
+
+
   select(selection) {
     let currentNode = this.findNode(selection);
 

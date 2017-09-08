@@ -1,13 +1,16 @@
-import Trie from './Trie.js';
+import Trie from './Trie';
 import dictionary from './words.json';
 
 
-const searchTrie = new Trie();
 //
-// $(document).ready( () => {
-//   searchTrie.populate(dictionary);
-//   $('.search').focus();
-// })
-
+// const wordInput = $('.search')
+// let searchTrie = new Trie();
+//
+// searchTrie.populate(dictionary);
+//
+//
+// function appendSuggestions() {
+//   let string = wordInput.val().toLowerCase()
+// }
 
 export default Trie;

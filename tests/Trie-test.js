@@ -1,16 +1,16 @@
 import { expect } from 'chai';
 import Trie from '../scripts/Trie';
 import Node from '../scripts/Node';
-import locus from 'locus';
+// import locus from 'locus';
 
-const fs = require ('fs');
+const fs = require('fs');
 
 const text = "/usr/share/dict/words";
 
 const dictionary = fs.readFileSync(text).toString().trim().split('\n');
 
 
-describe ('Trie functionality', () => {
+describe('TRIE FUNCTIONALITY', () => {
 
   describe('POPULATE', () => {
 
@@ -25,10 +25,9 @@ describe ('Trie functionality', () => {
   describe('INSERT', () => {
     let letterTrie;
 
-    beforeEach( () => {
+    beforeEach(() => {
       letterTrie = new Trie();
-      // eval(locus)
-    })
+    });
 
     it('should have a root', () => {
       expect(letterTrie.root).to.equal(null);
@@ -46,32 +45,32 @@ describe ('Trie functionality', () => {
       expect(
         letterTrie.root
         .children.t.letter
-       ).to.be.equal('t');
+      ).to.be.equal('t');
     });
 
     it('should be able to insert a word', () => {
       letterTrie.insert('ten');
 
       expect(
-       letterTrie.root
-       .children.t.letter
+        letterTrie.root
+        .children.t.letter
       ).to.equal('t');
 
       expect(
-      letterTrie.root
-      .children.t
-      .children.e.letter
-     ).to.equal('e');
+        letterTrie.root
+        .children.t
+        .children.e.letter
+      ).to.equal('e');
 
       expect(
-       letterTrie.root
-       .children.t
-       .children.e
-       .children.n.letter
+        letterTrie.root
+        .children.t
+        .children.e
+        .children.n.letter
       ).to.equal('n');
     });
 
-    it('should assign isWord property set to true to inserted words', () => {
+    it('should set isWord property to true for inserted words', () => {
       letterTrie.insert('tent');
       letterTrie.insert('ten');
 
@@ -81,14 +80,14 @@ describe ('Trie functionality', () => {
         .children.e
         .children.n
         .children.t.letter
-       ).to.equal('t');
+      ).to.equal('t');
 
       expect(
         letterTrie.root
         .children.t
         .children.e
         .children.n.isWord
-       ).to.equal(true);
+      ).to.equal(true);
 
       expect(
         letterTrie.root
@@ -96,7 +95,7 @@ describe ('Trie functionality', () => {
         .children.e
         .children.n
         .children.t.isWord
-       ).to.equal(true);
+      ).to.equal(true);
     });
 
     it('should be able to insert multiple words correctly', () => {
@@ -114,7 +113,7 @@ describe ('Trie functionality', () => {
         .children.n
         .children.t
         .children.s.isWord
-       ).to.equal(true);
+      ).to.equal(true);
 
       expect(
         letterTrie.root
@@ -122,14 +121,14 @@ describe ('Trie functionality', () => {
         .children.e
         .children.n
         .children.t.isWord
-       ).to.equal(true);
+      ).to.equal(true);
 
       expect(
         letterTrie.root
         .children.t
         .children.e
         .children.n.isWord
-       ).to.equal(true);
+      ).to.equal(true);
 
       expect(
         letterTrie.root
@@ -141,7 +140,7 @@ describe ('Trie functionality', () => {
         .children.c
         .children.l
         .children.e.isWord
-       ).to.equal(true);
+      ).to.equal(true);
 
       expect(
         letterTrie.root
@@ -151,7 +150,7 @@ describe ('Trie functionality', () => {
         .children.n
         .children.i
         .children.s.isWord
-       ).to.equal(true);
+      ).to.equal(true);
 
       expect(
         letterTrie.root
@@ -160,18 +159,18 @@ describe ('Trie functionality', () => {
         .children.a
         .children.i
         .children.n.isWord
-       ).to.equal(true);
-    })
+      ).to.equal(true);
+    });
 
     it('should know if a word is incomplete', () => {
       letterTrie.insert('runner');
 
       expect(
-       letterTrie.root
-       .children.r
-       .children.u
-       .children.n
-       .children.n.isWord
+        letterTrie.root
+        .children.r
+        .children.u
+        .children.n
+        .children.n.isWord
       ).to.equal(false);
     });
   });
@@ -179,14 +178,14 @@ describe ('Trie functionality', () => {
   describe('COUNT', () => {
     let letterTrie;
 
-    beforeEach( () => {
+    beforeEach(() => {
       letterTrie = new Trie();
     });
 
     it('should keep track of word count', () => {
       expect(letterTrie.count()).to.equal(0);
 
-      letterTrie.insert('tall');
+      letterTrie.insert('truck');
       expect(letterTrie.count()).to.equal(1);
 
       letterTrie.insert('tent');
@@ -200,9 +199,9 @@ describe ('Trie functionality', () => {
   describe('SUGGEST', () => {
     let letterTrie;
 
-    beforeEach( () => {
-      letterTrie = new Trie()
-    })
+    beforeEach(() => {
+      letterTrie = new Trie();
+    });
 
     it('should suggest a word', () => {
       letterTrie.insert('climb');
@@ -213,11 +212,10 @@ describe ('Trie functionality', () => {
       letterTrie.insert('carry');
 
       expect(letterTrie.suggest('cli')).to.deep.equal(
-      [ 'climb', 'climber', 'clip', 'clinic' ] )
+        ['climb', 'climber', 'clip', 'clinic']);
     });
 
-    it('should have a SAD PATH for XYZ when they enter a prefix that does not exist', () => {
-
+    it('should have an invalid path for XYZ when they enter a prefix that does not exist', () => {
       letterTrie.insert('climb');
       letterTrie.insert('clam');
       letterTrie.insert('climber');
@@ -226,34 +224,45 @@ describe ('Trie functionality', () => {
       letterTrie.insert('carry');
 
       expect(letterTrie.suggest('zl')).to.deep.equal('nothing for you')
-    })
+    });
   });
 
   describe('SELECT', () => {
     let letterTrie;
 
-    beforeEach( () => {
+    beforeEach(() => {
       letterTrie = new Trie()
-    })
-
-    it('should show selected suggestions first', () => {
-      letterTrie.populate(['pize', 'pizza', 'pizzeria', 'pizzicato', 'pizzle']);
-
-      expect(letterTrie.suggest('PIZ')).deep.equal(['pize', 'pizza', 'pizzeria',
-        'pizzicato', 'pizzle']);
-
-      letterTrie.select('pizzeria');
-      expect(letterTrie.suggest('PIZ')).deep.equal(['pizzeria', 'pize', 'pizza',
-        'pizzicato', 'pizzle']);
-
-      letterTrie.select('pizzicato');
-      expect(letterTrie.suggest('PIZ')).deep.equal(['pizzeria', 'pizzicato', 'pize',
-        'pizza', 'pizzle']);
-
-      letterTrie.select('pizzicato');
-      expect(letterTrie.suggest('PIZ')).deep.equal(['pizzicato', 'pizzeria', 'pize',
-        'pizza', 'pizzle']);
     });
 
+    it('should lowercase all values', () => {
+      letterTrie.populate(['tenacious', 'tenactiy', 'tennis', 'tent', 'tentacle']);
+
+      expect(letterTrie.suggest('TEN')).deep.equal(['tenacious', 'tenactiy', 'tennis',
+        'tent', 'tentacle'
+      ]);
+    });
+
+    it('should show selected suggestions first', () => {
+      letterTrie.populate(['tenacious', 'tenactiy', 'tennis', 'tent', 'tentacle']);
+
+      expect(letterTrie.suggest('TEN')).deep.equal(['tenacious', 'tenactiy', 'tennis',
+        'tent', 'tentacle'
+      ]);
+
+      letterTrie.select('tennis');
+      expect(letterTrie.suggest('TEN')).deep.equal(['tennis', 'tenacious', 'tenactiy',
+        'tent', 'tentacle'
+      ]);
+
+      letterTrie.select('tent');
+      expect(letterTrie.suggest('TEN')).deep.equal(['tennis', 'tent', 'tenacious',
+        'tenactiy', 'tentacle'
+      ]);
+
+      letterTrie.select('tent');
+      expect(letterTrie.suggest('TEN')).deep.equal(['tent', 'tennis', 'tenacious',
+        'tenactiy', 'tentacle'
+      ]);
+    });
   });
 });
