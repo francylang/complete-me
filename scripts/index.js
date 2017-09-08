@@ -1,16 +1,7 @@
-import Trie from './Trie';
-import dictionary from './words.json';
+const Trie = require('./Trie');
+// const Style = require('../style.css');
+
+let dictionary = require('fs').readFileSync("/usr/share/dict/words", 'utf8').toString().trim().split('\n');
 
 
-//
-// const wordInput = $('.search')
-// let searchTrie = new Trie();
-//
-// searchTrie.populate(dictionary);
-//
-//
-// function appendSuggestions() {
-//   let string = wordInput.val().toLowerCase()
-// }
-
-export default Trie;
+// Trie.populate(dic)

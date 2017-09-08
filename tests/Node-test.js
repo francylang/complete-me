@@ -1,5 +1,5 @@
-import { expect } from 'chai';
-import Node from '../scripts/Node';
+const { expect } = require('chai');
+const Node = require('../scripts/Node');
 
 describe ('NODE FUNCTIONALITY', () => {
   let node;
