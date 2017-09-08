@@ -1,6 +1,6 @@
-import Node from './Node.js';
+const Node = require('./Node');
 
-export default class Trie {
+class Trie {
   constructor() {
     this.root = null;
     this.wordCount = 0;
@@ -54,9 +54,7 @@ export default class Trie {
     }
     let output = this.findChildrenWords(inputString, currentNode, suggestionsArray);
 
-    let finalOutput = this.prepareOutput(output);
-
-    return finalOutput;
+    return this.prepareOutput(output);
   }
 
   findNode(string) {
@@ -74,15 +72,13 @@ export default class Trie {
   findChildrenWords(string, currentNode, suggestionsArray) {
     let keys = Object.keys(currentNode.children);
 
-    keys.forEach((key) => {
-      let completeWord = string.toLowerCase() + currentNode.children[key].letter;
+    keys.forEach((letter) => {
+      let completeWord = string.toLowerCase() + letter;
 
-      if (currentNode.children[key].isWord) {
-        suggestionsArray.push( {word: completeWord, frequency: currentNode.children[key].frequency} );
+      if (currentNode.children[letter].isWord) {
+        suggestionsArray.push( {word: completeWord, frequency: currentNode.children[letter].frequency} );
       }
-
-      completeWord = this.findChildrenWords(completeWord, currentNode.children[key], suggestionsArray);
-
+      completeWord = this.findChildrenWords(completeWord, currentNode.children[letter], suggestionsArray);
     });
     return suggestionsArray;
   }
@@ -95,11 +91,11 @@ export default class Trie {
     .slice(0, 10);
   }
 
-
-
   select(selection) {
     let currentNode = this.findNode(selection);
 
-    currentNode.isWord ? currentNode.frequency++ : null;
+    currentNode.isWord ? currentNode.frequency++ : 0;
   }
 }
+
+module.exports = Trie;

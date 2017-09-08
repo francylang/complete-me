@@ -1,4 +1,5 @@
-export default class Node {
+
+class Node {
   constructor(letter) {
     this.letter = letter || null;
     this.isWord = false;
@@ -6,3 +7,5 @@ export default class Node {
     this.frequency = 0;
   }
 }
+
+module.exports = Node;
