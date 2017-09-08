@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 import Trie from '../scripts/Trie';
 import Node from '../scripts/Node';
-// import locus from 'locus';
 
 const fs = require('fs');
 
@@ -225,14 +224,6 @@ describe('TRIE FUNCTIONALITY', () => {
 
       expect(letterTrie.suggest('zl')).to.deep.equal('nothing for you')
     });
-  });
-
-  describe('SELECT', () => {
-    let letterTrie;
-
-    beforeEach(() => {
-      letterTrie = new Trie()
-    });
 
     it('should lowercase all values', () => {
       letterTrie.populate(['tenacious', 'tenactiy', 'tennis', 'tent', 'tentacle']);
@@ -240,6 +231,14 @@ describe('TRIE FUNCTIONALITY', () => {
       expect(letterTrie.suggest('TEN')).deep.equal(['tenacious', 'tenactiy', 'tennis',
         'tent', 'tentacle'
       ]);
+    });
+  });
+
+  describe('SELECT', () => {
+    let letterTrie;
+
+    beforeEach(() => {
+      letterTrie = new Trie()
     });
 
     it('should show selected suggestions first', () => {
