@@ -14,11 +14,11 @@ describe ('Trie functionality', () => {
 
   describe('POPULATE', () => {
 
-    it.skip('should import words from the dictionary', () => {
+    it('should import words from the dictionary', () => {
       let letterTrie = new Trie();
 
       letterTrie.populate(dictionary);
-      expect(letterTrie.wordCount).to.equal(234371);
+      expect(letterTrie.wordCount).to.equal(235886);
     });
   });
 
@@ -225,8 +225,35 @@ describe ('Trie functionality', () => {
       letterTrie.insert('clinic');
       letterTrie.insert('carry');
 
-      expect(letterTrie.suggest('zl')).to.deep.equal([])
+      expect(letterTrie.suggest('zl')).to.deep.equal('nothing for you')
     })
+  });
+
+  describe('SELECT', () => {
+    let letterTrie;
+
+    beforeEach( () => {
+      letterTrie = new Trie()
+    })
+
+    it('should show selected suggestions first', () => {
+      letterTrie.populate(['pize', 'pizza', 'pizzeria', 'pizzicato', 'pizzle']);
+
+      expect(letterTrie.suggest('PIZ')).deep.equal(['pize', 'pizza', 'pizzeria',
+        'pizzicato', 'pizzle']);
+
+      letterTrie.select('pizzeria');
+      expect(letterTrie.suggest('PIZ')).deep.equal(['pizzeria', 'pize', 'pizza',
+        'pizzicato', 'pizzle']);
+
+      letterTrie.select('pizzicato');
+      expect(letterTrie.suggest('PIZ')).deep.equal(['pizzeria', 'pizzicato', 'pize',
+        'pizza', 'pizzle']);
+
+      letterTrie.select('pizzicato');
+      expect(letterTrie.suggest('PIZ')).deep.equal(['pizzicato', 'pizzeria', 'pize',
+        'pizza', 'pizzle']);
+    });
 
   });
 });

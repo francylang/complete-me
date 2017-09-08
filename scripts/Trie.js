@@ -13,15 +13,15 @@ export default class Trie {
   }
 
   insert(string) {
+
     if (!this.root) {
       this.root = new Node();
     }
 
-    const lettersArray = [...string.toLowerCase()];
-
     let currentNode = this.root;
 
-    lettersArray.forEach(( letter, index, array ) => {
+
+    [...string.toLowerCase()].forEach(( letter, index, array ) => {
       if (!currentNode.children[letter]) {
         currentNode.children[letter] = new Node(letter);
       }
@@ -38,23 +38,23 @@ export default class Trie {
     return this.wordCount;
   }
 
-  suggest(string) {
+  suggest(inputString) {
     let suggestionsArray = [];
 
-    if (!string) {
+    if (!inputString) {
       return 'letters please';
     }
 
-    let currentNode = this.findNode(string, this.root);
+    let currentNode = this.findNode(inputString);
 
     if (!currentNode) {
-      return 'none'
+      return 'nothing for you'
     }
 
     if (currentNode.isWord) {
-      suggestionsArray.push([string, currentNode])
+      suggestionsArray.push([inputString.toLowerCase(), currentNode.frequency])
     }
-    let output = this.findChildrenWords(string, currentNode, suggestionsArray);
+    let output = this.findChildrenWords(inputString, currentNode, suggestionsArray);
 
     let finalOutput = this.prepareOutput(output)
 
@@ -63,23 +63,25 @@ export default class Trie {
 
   findNode(string) {
     let currentNode = this.root;
-    let newString = [...string.toLowerCase()];
 
-    newString.forEach((letter) => {
-      currentNode = currentNode.children[letter]
-  
+    [...string.toLowerCase()].forEach((letter) => {
+
+      if (currentNode !== undefined) {
+        currentNode = currentNode.children[letter]
+      }
     })
 
     return currentNode;
   }
 
   findChildrenWords(string, currentNode, suggestionsArray) {
-    Object.keys(currentNode.children).forEach((key) => {
-      let completeWord = string + currentNode.children[key].letter;
+    let keys = Object.keys(currentNode.children)
+
+    keys.forEach((key) => {
+      let completeWord = string.toLowerCase() + currentNode.children[key].letter;
 
       if (currentNode.children[key].isWord) {
-
-        suggestionsArray.push( {word: completeWord} );
+        suggestionsArray.push( {word: completeWord, frequency: currentNode.children[key].frequency} );
       }
       completeWord = this.findChildrenWords(completeWord, currentNode.children[key], suggestionsArray);
 
@@ -90,51 +92,18 @@ export default class Trie {
 
   prepareOutput(array) {
     return array.sort((a, b) => {
-      return b - a;
+      return b.frequency - a.frequency;
     })
     .reduce((acc, object) => {
       acc.push(object.word);
       return acc;
     }, [])
+    .slice(0, 15);
   }
 // map over the array
+  select(selection) {
+    let currentNode = this.findNode(selection);
 
-
-
-
-// // select(string) {
-// flag words that have been selected by the user and prioritize those words the next time the prefix is entered
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  //   const newString = [...string.toLowerCase()];
-  //   let currentNode = this.root;
-  //   let node = this.findNode(newString, currentNode)
-  //
-  //   node.isWord ? node++ : null
-  //
-  // }
+    currentNode.isWord ? currentNode.frequency++ : null;
+  }
 }
