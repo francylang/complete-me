@@ -1,10 +1,8 @@
 export default class Node {
-  constructor(letter = null) {
-    this.letter = letter;
+  constructor(letter) {
+    this.letter = letter || null;
     this.isWord = false;
     this.children = {};
     this.frequency = 0;
-    this.timeStamp = 0;
-
   }
 }

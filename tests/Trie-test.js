@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import Trie from '../scripts/Trie';
 import Node from '../scripts/Node';
+import locus from 'locus';
 
 const fs = require ('fs');
 
@@ -13,11 +14,11 @@ describe ('Trie functionality', () => {
 
   describe('POPULATE', () => {
 
-    it.skip('should import words from the dictionary', () => {
+    it('should import words from the dictionary', () => {
       let letterTrie = new Trie();
 
       letterTrie.populate(dictionary);
-      expect(letterTrie.wordCount).to.equal(234371);
+      expect(letterTrie.wordCount).to.equal(235886);
     });
   });
 
@@ -26,6 +27,7 @@ describe ('Trie functionality', () => {
 
     beforeEach( () => {
       letterTrie = new Trie();
+      // eval(locus)
     })
 
     it('should have a root', () => {
@@ -195,37 +197,6 @@ describe ('Trie functionality', () => {
     });
   });
 
-  describe('FIND NODE', () => {
-    let letterTrie;
-
-    beforeEach(() => {
-      letterTrie = new Trie()
-    })
-  })
-
-  describe('FIND CHILDREN WORDS', () => {
-    let letterTrie;
-
-    beforeEach(() => {
-      letterTrie = new Trie()
-    })
-
-    it('should return a full word based on input of prefix', () => {
-      letterTrie.insert('climber')
-
-      letterTrie.suggest('cl')
-
-      let checkedNode = letterTrie
-                        .root
-                        .children.c
-                        .children.l
-
-      expect(letterTrie.findChildrenWords(
-        'cl', checkedNode, [])).to.deep.equal(
-          [ { word: 'climber', frequency: 0 }])
-    })
-  })
-
   describe('SUGGEST', () => {
     let letterTrie;
 
@@ -243,7 +214,46 @@ describe ('Trie functionality', () => {
 
       expect(letterTrie.suggest('cli')).to.deep.equal(
       [ 'climb', 'climber', 'clip', 'clinic' ] )
-
     });
+
+    it('should have a SAD PATH for XYZ when they enter a prefix that does not exist', () => {
+
+      letterTrie.insert('climb');
+      letterTrie.insert('clam');
+      letterTrie.insert('climber');
+      letterTrie.insert('clip');
+      letterTrie.insert('clinic');
+      letterTrie.insert('carry');
+
+      expect(letterTrie.suggest('zl')).to.deep.equal('nothing for you')
+    })
+  });
+
+  describe('SELECT', () => {
+    let letterTrie;
+
+    beforeEach( () => {
+      letterTrie = new Trie()
+    })
+
+    it('should show selected suggestions first', () => {
+      letterTrie.populate(['pize', 'pizza', 'pizzeria', 'pizzicato', 'pizzle']);
+
+      expect(letterTrie.suggest('PIZ')).deep.equal(['pize', 'pizza', 'pizzeria',
+        'pizzicato', 'pizzle']);
+
+      letterTrie.select('pizzeria');
+      expect(letterTrie.suggest('PIZ')).deep.equal(['pizzeria', 'pize', 'pizza',
+        'pizzicato', 'pizzle']);
+
+      letterTrie.select('pizzicato');
+      expect(letterTrie.suggest('PIZ')).deep.equal(['pizzeria', 'pizzicato', 'pize',
+        'pizza', 'pizzle']);
+
+      letterTrie.select('pizzicato');
+      expect(letterTrie.suggest('PIZ')).deep.equal(['pizzicato', 'pizzeria', 'pize',
+        'pizza', 'pizzle']);
+    });
+
   });
 });
