@@ -46,7 +46,7 @@ class Trie {
     let currentNode = this.findNode(inputString);
 
     if (!currentNode) {
-      return 'nothing for you';
+      return '';
     }
 
     if (currentNode.isWord) {
